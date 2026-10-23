@@ -6,9 +6,9 @@ Application React avec Vite, React Router et PokéAPI.
 
 Production : https://pokedex-navy-chi-13.vercel.app
 
-Le projet Vercel `pokedex` est connecté au dépôt `clemco23/cours_redux`.
+Le projet Vercel `pokedex` est connecté au dépôt `clemco23/pokedex1`.
 Le premier déploiement a été réalisé depuis le dossier local le 23 octobre 2026.
-La configuration GitHub Actions doit encore être publiée dans le dépôt après réconciliation des historiques pour activer la CI distante.
+La configuration GitHub Actions est publiée dans le dépôt.
 
 ## Développement
 
@@ -38,8 +38,8 @@ La compilation de production est générée dans `dist/`.
 
 ## Mise en ligne sur Vercel
 
-1. Publier cette configuration sur GitHub après avoir réconcilié les historiques local et distant. Attention : `origin/main` et le `main` local ont des historiques différents ; ne pas utiliser de push forcé.
-2. Dans [Vercel](https://vercel.com/new), importer le dépôt `clemco23/cours_redux`.
+1. Publier les modifications sur GitHub avec `git push` depuis la branche `main`.
+2. Pour recréer le projet, dans [Vercel](https://vercel.com/new), importer le dépôt `clemco23/pokedex1`.
 3. Sélectionner **Vite**, la racine du projet (`./`) et Node.js **22.x**. `vercel.json` définit l’installation (`npm ci`), la compilation et le dossier de sortie (`dist`).
 4. Lancer **Deploy**, puis vérifier dans les paramètres Git que la branche de production est `main`.
 5. Ouvrir l’URL attribuée et vérifier `/`, `/poke/1` et `/anciens-tp`, y compris après actualisation. La réécriture vers `index.html` permet à React Router de gérer ces URLs.
