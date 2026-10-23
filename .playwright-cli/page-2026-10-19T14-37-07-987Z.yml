@@ -1,0 +1,35 @@
+- generic [ref=f1e2]:
+  - link "Aller au contenu" [ref=f1e3] [cursor=pointer]:
+    - /url: "#contenu"
+  - banner [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - link "Pokédex, accueil" [ref=f1e6] [cursor=pointer]:
+        - /url: /
+        - text: Pokédex
+        - generic [ref=f1e8]: .
+      - navigation "Navigation principale" [ref=f1e9]:
+        - link "Explorer" [ref=f1e10] [cursor=pointer]:
+          - /url: /
+        - link "TP 1 & 2" [ref=f1e11] [cursor=pointer]:
+          - /url: /anciens-tp
+  - main [ref=f1e12]:
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - paragraph [ref=f1e15]: La collection
+        - heading "Mon Pokédex." [level=1] [ref=f1e16]
+        - paragraph [ref=f1e17]: Chaque Pokémon a son histoire. Découvrez la sienne.
+      - generic [ref=f1e18]:
+        - heading "Tous les Pokémon" [level=2] [ref=f1e19]
+        - generic [ref=f1e20]: Page 01
+      - status [ref=f1e21]: Chargement des pokémons...
+      - navigation "Pagination des Pokémon" [ref=f1e22]:
+        - button "Précédente" [disabled] [ref=f1e23]:
+          - generic [aria-hidden] [ref=f1e24]: ←
+          - text: Précédente
+        - generic [ref=f1e25]: Page 1
+        - button "Suivante" [disabled] [ref=f1e26]:
+          - text: Suivante
+          - generic [aria-hidden] [ref=f1e27]: →
+  - contentinfo [ref=f1e28]:
+    - generic [ref=f1e29]: Un petit monde à explorer.
+    - generic [ref=f1e30]: "Données : PokéAPI"
