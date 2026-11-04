@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'motion/react'
 
 function PokeCard({ id, nom, element, image, index = 0 }) {
   const reduceMotion = useReducedMotion()
+  const isAboveFold = index < 4
 
   return (
     <motion.article
@@ -16,7 +17,14 @@ function PokeCard({ id, nom, element, image, index = 0 }) {
       <Link className="card-link" to={`/poke/${id}`} aria-label={`Voir les détails de ${nom}`}>
         <div className="pokemon-art">
           <span className="pokemon-number">N° {String(id).padStart(3, '0')}</span>
-          <img src={image} alt={nom} width="180" height="180" loading="lazy" />
+          <img
+            src={image}
+            alt={nom}
+            width={180}
+            height={180}
+            loading={isAboveFold ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? 'high' : 'auto'}
+          />
         </div>
         <div className="card-content">
           <div className="card-title-row">

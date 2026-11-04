@@ -38,6 +38,8 @@ function PokeDetails() {
               alt={pokemon.name}
               width="360"
               height="360"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
           <div className="detail-content">
