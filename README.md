@@ -21,9 +21,18 @@ npm run dev
 
 ## Vérifications
 
+Avant un commit, lancer les contrôles suivants depuis la racine du projet :
+
 ```sh
+npm run format:check
 npm run lint
+npm test
 npm run build
+```
+
+Pour vérifier ensuite le résultat compilé dans le navigateur :
+
+```sh
 npm run preview
 ```
 
@@ -36,11 +45,7 @@ guillemets simples en JavaScript, pas de points-virgules et fins de ligne LF.
 Les dépendances, fichiers générés, ressources graphiques et le fichier de
 verrouillage npm sont exclus via `.prettierignore`.
 
-Si Prettier n’est pas encore installé dans le projet :
-
-```sh
-npm install --save-dev --save-exact prettier
-```
+Prettier est une dépendance de développement du projet, installée avec `npm ci`.
 
 Pour appliquer le formatage puis vérifier son respect sans modifier de fichiers :
 
@@ -51,6 +56,73 @@ npm run format:check
 
 ESLint continue de vérifier la qualité du code avec `npm run lint` ; Prettier
 s’occupe uniquement de sa présentation.
+
+## Conventions de développement
+
+### Nommage
+
+- Nommer les composants et leurs fichiers JSX en PascalCase : `PokeCard.jsx`,
+  `PokeDetailsSkeleton.jsx`.
+- Commencer le nom d’un hook personnalisé par `use`, en camelCase, avec un fichier
+  du même nom : `usePokemonPage.js`.
+- Utiliser camelCase pour les variables, fonctions et props, et UPPER_SNAKE_CASE
+  pour les constantes de configuration : `getPokemon`, `isLoading`, `CACHE_TTL`.
+- Choisir des noms qui décrivent le rôle de la donnée ou de l’action. Respecter
+  la terminologie du fichier modifié ; ne pas renommer le code existant uniquement
+  pour changer sa langue. Les textes de l’interface et la documentation sont en français.
+- Nommer les classes CSS en kebab-case : `detail-card`, `pokemon-grid`.
+
+### Organisation des fichiers
+
+| Emplacement                | Responsabilité                                                   |
+| -------------------------- | ---------------------------------------------------------------- |
+| `src/pages/`               | Écrans associés aux routes : collection, fiche, anciens TP.      |
+| `src/components/`          | Éléments d’interface et états de chargement.                     |
+| `src/hooks/`               | Logique liée à React extraite dans des hooks personnalisés.      |
+| `src/services/`            | Accès API, cache partagé et préparation des URLs d’images.       |
+| `src/assets/` et `public/` | Ressources graphiques importées ou servies directement.          |
+| `tests/`                   | Tests automatisés, nommés `*.test.js`, exécutés avec `npm test`. |
+
+Les styles communs restent dans `src/index.css` et les styles de l’interface dans
+`src/App.css`. Placer les nouveaux fichiers dans les dossiers existants avant de
+créer une nouvelle organisation.
+
+### Simplicité et qualité
+
+- Garder une responsabilité cohérente par composant. Extraire un composant, un
+  hook ou une fonction si cela clarifie la logique ou évite une duplication utile.
+- Utiliser les services de cache pour les données de la collection et des fiches,
+  afin de partager les requêtes. Les composants des anciens TP restent indépendants.
+- Prévoir les états de chargement, d’erreur et de résultat vide pour les appels API.
+  Dans les effets, empêcher une réponse devenue obsolète de modifier la vue courante.
+- Préférer les éléments HTML natifs adaptés, des libellés explicites et des textes
+  alternatifs pour les images. Respecter la préférence de réduction des animations.
+- Ajouter des tests lorsqu’une modification touche un comportement important,
+  notamment le cache. Mesurer avant d’ajouter une optimisation de rendu.
+- Laisser Prettier gérer le formatage et corriger les erreurs ESLint sans désactiver
+  une règle pour masquer un problème.
+
+### Commits et publication
+
+Appliquer `npm run format` si nécessaire, puis exécuter les commandes de la section
+[Vérifications](#vérifications). Pour une modification d’interface, vérifier aussi
+le résultat sur mobile et ordinateur, ainsi que les états de chargement et d’erreur.
+
+Relire `git diff` et les fichiers sélectionnés avec `git diff --cached` avant de
+commiter. Garder chaque commit centré sur un changement et utiliser un message
+Conventional Commits sous la forme `type: description` :
+
+- `feat: ajouter un filtre par type` pour une fonctionnalité ;
+- `fix: conserver la page au retour d’une fiche` pour une correction ;
+- `perf: partager le cache des donnees Pokemon` pour une optimisation ;
+- `chore: configurer Prettier` pour l’outillage ;
+- `docs: documenter les conventions du projet` pour la documentation.
+
+Expliquer les choix techniques inhabituels dans la documentation ou un commentaire
+utile. Un push sur `main` déclenche le déploiement de production Vercel : vérifier
+les contrôles et le résultat du déploiement après publication. La CI actuelle lance
+le lint et le build ; les tests et le contrôle Prettier restent à lancer localement
+tant qu’ils ne sont pas ajoutés au workflow.
 
 ## Cache des données Pokémon
 
