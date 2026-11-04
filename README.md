@@ -29,6 +29,21 @@ npm run preview
 
 La compilation de production est générée dans `dist/`.
 
+## Images Pokémon
+
+Les illustrations officielles des cartes et des fiches utilisent l’API native
+d’optimisation d’images de Vercel en production : variantes de 128 à 512 pixels,
+format WebP selon le navigateur, qualité 75 et cache d’au moins 24 heures.
+Les attributs `srcSet` et `sizes` permettent au navigateur de choisir la taille
+selon l’affichage et la densité de l’écran. Seules les illustrations officielles
+du dépôt PokéAPI sont autorisées ; les petits sprites restent inchangés.
+
+Avec `npm run dev`, les images d’origine sont utilisées. Avec `npm run preview`
+ou si l’optimiseur échoue, le composant revient automatiquement à l’image d’origine.
+La conversion et le gain de poids devront être vérifiés après déploiement sur
+Vercel, dans l’onglet Réseau du navigateur. Les transformations utilisent les
+quotas Image Optimization du projet Vercel.
+
 ## Pipeline CI/CD
 
 - **CI — GitHub Actions** : `.github/workflows/ci.yml` installe les dépendances avec `npm ci`, exécute ESLint puis compile l’application. Déclenchement sur les push vers `main`, les pull requests et manuellement depuis l’onglet Actions.

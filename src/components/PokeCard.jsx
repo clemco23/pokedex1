@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
+import PokemonImage from './PokemonImage.jsx'
 
 function PokeCard({ id, nom, element, image, index = 0 }) {
   const { search } = useLocation()
@@ -18,7 +19,7 @@ function PokeCard({ id, nom, element, image, index = 0 }) {
       <Link className="card-link" to={`/poke/${id}${search}`} aria-label={`Voir les détails de ${nom}`}>
         <div className="pokemon-art">
           <span className="pokemon-number">N° {String(id).padStart(3, '0')}</span>
-          <img
+          <PokemonImage
             src={image}
             alt={nom}
             width={180}

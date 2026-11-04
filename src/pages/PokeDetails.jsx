@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import api from '../services/api.js'
+import PokemonImage from '../components/PokemonImage.jsx'
 
 function PokeDetails() {
   const { id } = useParams()
@@ -34,7 +35,8 @@ function PokeDetails() {
         <article className="detail-card" data-type={pokemon.types[0].type.name}>
           <div className="detail-art pokemon-art">
             <span className="pokemon-number">N° {String(pokemon.id).padStart(3, '0')}</span>
-            <img
+            <PokemonImage
+              variant="detail"
               src={pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}
               alt={pokemon.name}
               width="360"
