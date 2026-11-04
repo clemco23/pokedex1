@@ -1,9 +1,11 @@
-﻿import './App.css'
+import './App.css'
+import { lazy, Suspense } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { motion, MotionConfig, useReducedMotion } from 'motion/react'
 import Home from './pages/Home.jsx'
-import PokeDetails from './pages/PokeDetails.jsx'
-import AnciensTp from './pages/AnciensTp.jsx'
+
+const PokeDetails = lazy(() => import('./pages/PokeDetails.jsx'))
+const AnciensTp = lazy(() => import('./pages/AnciensTp.jsx'))
 
 function App() {
   const location = useLocation()
@@ -32,11 +34,13 @@ function App() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.25 }}
       >
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/poke/:id" element={<PokeDetails />} />
-          <Route path="/anciens-tp" element={<AnciensTp />} />
-        </Routes>
+        <Suspense fallback={<p className="state-message" role="status">Chargement de la page...</p>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/poke/:id" element={<PokeDetails />} />
+            <Route path="/anciens-tp" element={<AnciensTp />} />
+          </Routes>
+        </Suspense>
       </motion.main>
       <footer className="site-footer">
         <span>Un petit monde à explorer.</span>
