@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import api from '../services/api.js'
 
 const DEFAULT_LIMIT = 20
 
 function usePokemonPage(limit = DEFAULT_LIMIT) {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const requestedPage = searchParams.get('page')
+  const pageNumber = /^\d+$/.test(requestedPage ?? '') ? Number(requestedPage) : 1
+  const page = Number.isSafeInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1
+  const requestKey = `${page}:${limit}`
   const [pokemons, setPokemons] = useState([])
-  const [page, setPage] = useState(1)
   const [hasNext, setHasNext] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loadedRequest, setLoadedRequest] = useState(null)
+  const isLoading = loadedRequest !== requestKey
   const [erreur, setErreur] = useState('')
 
   useEffect(() => {
@@ -29,13 +35,14 @@ function usePokemonPage(limit = DEFAULT_LIMIT) {
 
         setPokemons(details)
         setHasNext(response.data.next !== null)
+        setErreur('')
       } catch {
         if (!controller.signal.aborted) {
           setErreur('Impossible de récupérer les pokémons.')
         }
       } finally {
         if (!controller.signal.aborted) {
-          setIsLoading(false)
+          setLoadedRequest(requestKey)
         }
       }
     }
@@ -43,16 +50,23 @@ function usePokemonPage(limit = DEFAULT_LIMIT) {
     chargerPokemons()
 
     return () => controller.abort()
-  }, [limit, page])
+  }, [limit, page, requestKey])
 
   function changerPage(nouvellePage) {
-    if (nouvellePage < 1 || nouvellePage === page) {
+    if (!Number.isSafeInteger(nouvellePage) || nouvellePage < 1 || nouvellePage === page) {
       return
     }
 
-    setIsLoading(true)
     setErreur('')
-    setPage(nouvellePage)
+    setSearchParams((previousParams) => {
+      const nextParams = new URLSearchParams(previousParams)
+      if (nouvellePage === 1) {
+        nextParams.delete('page')
+      } else {
+        nextParams.set('page', String(nouvellePage))
+      }
+      return nextParams
+    })
   }
 
   return {

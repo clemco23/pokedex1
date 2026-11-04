@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import api from '../services/api.js'
 
 function PokeDetails() {
   const { id } = useParams()
+  const { search } = useLocation()
   const [pokemon, setPokemon] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [erreur, setErreur] = useState('')
@@ -20,7 +21,7 @@ function PokeDetails() {
 
   return (
     <div className="details-page">
-      <Link className="back-link" to="/"><span aria-hidden="true">←</span> Retour à la collection</Link>
+      <Link className="back-link" to={`/${search}`}><span aria-hidden="true">←</span> Retour à la collection</Link>
       <header className="page-header details-header">
         <p className="eyebrow">À la loupe</p>
         <h1>Détails du Pokémon<span className="title-dot">.</span></h1>
