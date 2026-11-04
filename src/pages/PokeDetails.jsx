@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getPokemon, readPokemon } from '../services/pokemonCache.js'
 import PokemonImage from '../components/PokemonImage.jsx'
+import PokeDetailsSkeleton from '../components/PokeDetailsSkeleton.jsx'
 
 function PokeDetails() {
   const { id } = useParams()
@@ -35,7 +36,7 @@ function PokeDetails() {
         <h1>Détails du Pokémon<span className="title-dot">.</span></h1>
       </header>
       {isLoading ? (
-        <p className="state-message" role="status">Chargement...</p>
+        <PokeDetailsSkeleton />
       ) : erreur ? (
         <p className="state-message state-error" role="alert">{erreur}</p>
       ) : pokemon ? (
