@@ -1,4 +1,5 @@
 import PokeCard from '../components/PokeCard.jsx'
+import PokeGridSkeleton from '../components/PokeGridSkeleton.jsx'
 import Pagination from '../components/Pagination.jsx'
 import usePokemonPage from '../hooks/usePokemonPage.js'
 
@@ -17,7 +18,7 @@ function Home() {
         <span className="page-indicator">Page {String(page).padStart(2, '0')}</span>
       </div>
       {isLoading ? (
-        <p className="state-message" role="status">Chargement des pokémons...</p>
+        <PokeGridSkeleton />
       ) : erreur ? (
         <p className="state-message state-error" role="alert">{erreur}</p>
       ) : pokemons.length === 0 ? (
