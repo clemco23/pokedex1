@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import api from '../services/api.js'
+import { getPokemonPage, readPokemonPage } from '../services/pokemonCache.js'
 
 const DEFAULT_LIMIT = 20
 
@@ -13,35 +13,26 @@ function usePokemonPage(limit = DEFAULT_LIMIT) {
   const [pokemons, setPokemons] = useState([])
   const [hasNext, setHasNext] = useState(false)
   const [loadedRequest, setLoadedRequest] = useState(null)
-  const isLoading = loadedRequest !== requestKey
+  const cachedPage = readPokemonPage(page, limit)
+  const isLoading = !cachedPage && loadedRequest !== requestKey
   const [erreur, setErreur] = useState('')
 
   useEffect(() => {
-    const controller = new AbortController()
+    let active = true
 
     async function chargerPokemons() {
       try {
-        const response = await api.get('/pokemon/', {
-          params: { limit, offset: (page - 1) * limit },
-          signal: controller.signal,
-        })
-
-        const details = await Promise.all(
-          response.data.results.map((pokemon) =>
-            api.get(pokemon.url, { signal: controller.signal })
-              .then((detailResponse) => detailResponse.data)
-          )
-        )
-
-        setPokemons(details)
-        setHasNext(response.data.next !== null)
+        const data = await getPokemonPage(page, limit)
+        if (!active) return
+        setPokemons(data.pokemons)
+        setHasNext(data.hasNext)
         setErreur('')
       } catch {
-        if (!controller.signal.aborted) {
+        if (active) {
           setErreur('Impossible de récupérer les pokémons.')
         }
       } finally {
-        if (!controller.signal.aborted) {
+        if (active) {
           setLoadedRequest(requestKey)
         }
       }
@@ -49,7 +40,8 @@ function usePokemonPage(limit = DEFAULT_LIMIT) {
 
     chargerPokemons()
 
-    return () => controller.abort()
+    // Shared requests keep filling the cache; obsolete views ignore their results.
+    return () => { active = false }
   }, [limit, page, requestKey])
 
   function changerPage(nouvellePage) {
@@ -70,11 +62,11 @@ function usePokemonPage(limit = DEFAULT_LIMIT) {
   }
 
   return {
-    pokemons,
+    pokemons: cachedPage?.pokemons ?? pokemons,
     page,
-    hasNext,
+    hasNext: cachedPage?.hasNext ?? hasNext,
     isLoading,
-    erreur,
+    erreur: cachedPage ? '' : erreur,
     changerPage,
   }
 }

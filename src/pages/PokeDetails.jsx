@@ -1,23 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import api from '../services/api.js'
+import { getPokemon, readPokemon } from '../services/pokemonCache.js'
 import PokemonImage from '../components/PokemonImage.jsx'
 
 function PokeDetails() {
   const { id } = useParams()
   const { search } = useLocation()
-  const [pokemon, setPokemon] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [erreur, setErreur] = useState('')
+  const [result, setResult] = useState(null)
+  const cachedPokemon = readPokemon(id)
+  const currentResult = result?.id === id ? result : null
+  const pokemon = cachedPokemon ?? currentResult?.pokemon
+  const isLoading = !cachedPokemon && !currentResult
+  const erreur = cachedPokemon ? '' : currentResult?.erreur
 
   useEffect(() => {
-    api.get(`/pokemon/${id}/`)
-      .then((response) => {
-        setPokemon(response.data)
-        setErreur('')
+    let active = true
+
+    getPokemon(id)
+      .then((data) => {
+        if (active) setResult({ id, pokemon: data, erreur: '' })
       })
-      .catch(() => setErreur('Impossible de récupérer ce Pokémon.'))
-      .finally(() => setIsLoading(false))
+      .catch(() => {
+        if (active) setResult({ id, pokemon: null, erreur: 'Impossible de récupérer ce Pokémon.' })
+      })
+
+    return () => { active = false }
   }, [id])
 
   return (

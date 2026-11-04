@@ -29,6 +29,21 @@ npm run preview
 
 La compilation de production est générée dans `dist/`.
 
+## Cache des données Pokémon
+
+La collection et les fiches partagent un cache en mémoire valable cinq minutes,
+limité à 20 pages et 400 fiches. Ouvrir une fiche depuis une collection déjà chargée
+ou revenir sur une page en cache ne relance pas ses appels à PokéAPI.
+Les requêtes simultanées identiques sont regroupées et les erreurs ne sont pas
+conservées. Une navigation ne coupe pas une requête partagée, mais ses résultats
+ne mettent plus à jour la vue quittée. Le cache disparaît lors d’une actualisation
+ou de la fermeture de l’onglet. Les anciens exercices de la route `/anciens-tp`
+gardent leur fonctionnement indépendant.
+
+Pour vérifier : dans Réseau → Fetch/XHR, charger la collection, ouvrir une fiche,
+puis revenir à la collection. Aucun nouvel appel PokéAPI n’est attendu pour ces
+données pendant cinq minutes. Une actualisation permet de tester un cache vide.
+
 ## Images Pokémon
 
 Les illustrations officielles des cartes et des fiches utilisent l’API native
