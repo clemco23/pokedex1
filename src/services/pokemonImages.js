@@ -1,7 +1,9 @@
-const ARTWORK_URL = /^https:\/\/raw\.githubusercontent\.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/other\/official-artwork\/\d+\.png$/
+const ARTWORK_URL =
+  /^https:\/\/raw\.githubusercontent\.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/other\/official-artwork\/\d+\.png$/
 
 export const CARD_IMAGE_SIZES = '(max-width: 340px) 165px, (max-width: 420px) 125px, 165px'
-export const DETAIL_IMAGE_SIZES = '(max-width: 340px) 165px, (max-width: 420px) 125px, (max-width: 720px) 250px, 320px'
+export const DETAIL_IMAGE_SIZES =
+  '(max-width: 340px) 165px, (max-width: 420px) 125px, (max-width: 720px) 250px, 320px'
 
 export function getPokemonImageProps(src, variant = 'card') {
   // Small fallback sprites do not benefit from resizing or recompression.

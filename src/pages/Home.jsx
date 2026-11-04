@@ -10,7 +10,9 @@ function Home() {
     <div>
       <header className="page-header">
         <p className="eyebrow">La collection</p>
-        <h1>Mon Pokédex<span className="title-dot">.</span></h1>
+        <h1>
+          Mon Pokédex<span className="title-dot">.</span>
+        </h1>
         <p className="page-description">Chaque Pokémon a son histoire. Découvrez la sienne.</p>
       </header>
       <div className="collection-heading">
@@ -20,9 +22,13 @@ function Home() {
       {isLoading ? (
         <PokeGridSkeleton />
       ) : erreur ? (
-        <p className="state-message state-error" role="alert">{erreur}</p>
+        <p className="state-message state-error" role="alert">
+          {erreur}
+        </p>
       ) : pokemons.length === 0 ? (
-        <p className="state-message" role="status">Aucun pokemon disponible.</p>
+        <p className="state-message" role="status">
+          Aucun pokemon disponible.
+        </p>
       ) : (
         <div className="pokemon-grid">
           {pokemons.map((pokemon, index) => (
@@ -32,7 +38,10 @@ function Home() {
               id={pokemon.id}
               nom={pokemon.name}
               element={pokemon.types.map((type) => type.type.name).join(', ')}
-              image={pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}
+              image={
+                pokemon.sprites.other['official-artwork'].front_default ||
+                pokemon.sprites.front_default
+              }
             />
           ))}
         </div>

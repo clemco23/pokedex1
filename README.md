@@ -29,6 +29,29 @@ npm run preview
 
 La compilation de production est générée dans `dist/`.
 
+## Formatage du code
+
+Prettier est configuré dans `.prettierrc.json` : indentation de deux espaces,
+guillemets simples en JavaScript, pas de points-virgules et fins de ligne LF.
+Les dépendances, fichiers générés, ressources graphiques et le fichier de
+verrouillage npm sont exclus via `.prettierignore`.
+
+Si Prettier n’est pas encore installé dans le projet :
+
+```sh
+npm install --save-dev --save-exact prettier
+```
+
+Pour appliquer le formatage puis vérifier son respect sans modifier de fichiers :
+
+```sh
+npm run format
+npm run format:check
+```
+
+ESLint continue de vérifier la qualité du code avec `npm run lint` ; Prettier
+s’occupe uniquement de sa présentation.
+
 ## Cache des données Pokémon
 
 La collection et les fiches partagent un cache en mémoire valable cinq minutes,

@@ -22,8 +22,8 @@ function PokedexApi() {
                 throw new Error('Impossible de récupérer les détails des pokémons.')
               }
               return response.json()
-            })
-          )
+            }),
+          ),
         )
       })
       .then((data) => setPokemons(data))
@@ -36,14 +36,25 @@ function PokedexApi() {
   }, [])
 
   return (
-    <section className="archive-section pokedex-api pokemon-grid" aria-labelledby="api-pokedex-title">
-      <h2 id="api-pokedex-title" className="section-header">TP 2 · PokéAPI</h2>
+    <section
+      className="archive-section pokedex-api pokemon-grid"
+      aria-labelledby="api-pokedex-title"
+    >
+      <h2 id="api-pokedex-title" className="section-header">
+        TP 2 · PokéAPI
+      </h2>
       {isLoading ? (
-        <p className="state-message" role="status">Chargement des pokémons...</p>
+        <p className="state-message" role="status">
+          Chargement des pokémons...
+        </p>
       ) : erreur ? (
-        <p className="state-message" role="alert">Erreur : {erreur}</p>
+        <p className="state-message" role="alert">
+          Erreur : {erreur}
+        </p>
       ) : pokemons.length === 0 ? (
-        <p className="state-message" role="status">Aucun pokemon disponible.</p>
+        <p className="state-message" role="status">
+          Aucun pokemon disponible.
+        </p>
       ) : (
         pokemons.map((pokemon) => (
           <Pokemon

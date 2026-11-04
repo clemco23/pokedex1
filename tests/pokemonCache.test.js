@@ -1,17 +1,26 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import api from '../src/services/api.js'
-import { getPokemon, getPokemonPage, readPokemon, readPokemonPage } from '../src/services/pokemonCache.js'
+import {
+  getPokemon,
+  getPokemonPage,
+  readPokemon,
+  readPokemonPage,
+} from '../src/services/pokemonCache.js'
 
 test('collection and details share cached data and returning to a page makes no request', async (t) => {
   const calls = []
   t.mock.method(api, 'get', async (url, options) => {
     calls.push({ url, options })
     if (url === '/pokemon/') {
-      return { data: {
-        next: 'next-page',
-        results: [910001, 910002].map((id) => ({ url: `https://pokeapi.co/api/v2/pokemon/${id}/` })),
-      } }
+      return {
+        data: {
+          next: 'next-page',
+          results: [910001, 910002].map((id) => ({
+            url: `https://pokeapi.co/api/v2/pokemon/${id}/`,
+          })),
+        },
+      }
     }
     return { data: { id: Number(url.split('/')[2]) } }
   })
@@ -29,7 +38,9 @@ test('collection and details share cached data and returning to a page makes no 
 
 test('simultaneous requests for an ID and an API URL share one network call', async (t) => {
   let release
-  const response = new Promise((resolve) => { release = resolve })
+  const response = new Promise((resolve) => {
+    release = resolve
+  })
   const get = t.mock.method(api, 'get', () => response)
   const first = getPokemon(920001)
   const second = getPokemon('https://pokeapi.co/api/v2/pokemon/920001/')
@@ -41,7 +52,9 @@ test('simultaneous requests for an ID and an API URL share one network call', as
 })
 
 test('failed requests are not cached and can be retried', async (t) => {
-  const get = t.mock.method(api, 'get', async () => { throw new Error('offline') })
+  const get = t.mock.method(api, 'get', async () => {
+    throw new Error('offline')
+  })
   await assert.rejects(getPokemon(930001), /offline/)
   assert.equal(readPokemon(930001), undefined)
   get.mock.mockImplementation(async () => ({ data: { id: 930001 } }))

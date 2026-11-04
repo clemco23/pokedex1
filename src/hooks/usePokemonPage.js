@@ -41,7 +41,9 @@ function usePokemonPage(limit = DEFAULT_LIMIT) {
     chargerPokemons()
 
     // Shared requests keep filling the cache; obsolete views ignore their results.
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [limit, page, requestKey])
 
   function changerPage(nouvellePage) {

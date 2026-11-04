@@ -13,7 +13,9 @@ function App() {
 
   return (
     <MotionConfig reducedMotion="user" transition={{ duration: 0.25 }}>
-      <a className="skip-link" href="#contenu">Aller au contenu</a>
+      <a className="skip-link" href="#contenu">
+        Aller au contenu
+      </a>
       <header className="site-header">
         <div className="header-inner">
           <Link className="brand" to="/" aria-label="Pokédex, accueil">
@@ -21,7 +23,9 @@ function App() {
             Pokédex<span className="brand-dot">.</span>
           </Link>
           <nav className="main-nav" aria-label="Navigation principale">
-            <NavLink to="/" end>Explorer</NavLink>
+            <NavLink to="/" end>
+              Explorer
+            </NavLink>
             <NavLink to="/anciens-tp">TP 1 &amp; 2</NavLink>
           </nav>
         </div>
@@ -34,7 +38,13 @@ function App() {
         animate={{ y: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.25 }}
       >
-        <Suspense fallback={<p className="state-message" role="status">Chargement de la page...</p>}>
+        <Suspense
+          fallback={
+            <p className="state-message" role="status">
+              Chargement de la page...
+            </p>
+          }
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/poke/:id" element={<PokeDetails />} />
