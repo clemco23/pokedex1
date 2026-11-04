@@ -1,38 +1,9 @@
-import { useEffect, useState } from 'react'
-import api from '../services/api.js'
 import PokeCard from '../components/PokeCard.jsx'
 import Pagination from '../components/Pagination.jsx'
+import usePokemonPage from '../hooks/usePokemonPage.js'
 
 function Home() {
-  const [pokemons, setPokemons] = useState([])
-  const [page, setPage] = useState(1)
-  const [hasNext, setHasNext] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [erreur, setErreur] = useState('')
-  const limit = 20
-
-  useEffect(() => {
-    api.get('/pokemon/', {
-      params: { limit, offset: (page - 1) * limit },
-    })
-      .then((response) => {
-        setHasNext(response.data.next !== null)
-        return Promise.all(
-          response.data.results.map((pokemon) =>
-            api.get(pokemon.url).then((details) => details.data)
-          )
-        )
-      })
-      .then((data) => setPokemons(data))
-      .catch(() => setErreur('Impossible de récupérer les pokémons.'))
-      .finally(() => setIsLoading(false))
-  }, [page])
-
-  function changerPage(nouvellePage) {
-    setIsLoading(true)
-    setErreur('')
-    setPage(nouvellePage)
-  }
+  const { pokemons, page, hasNext, isLoading, erreur, changerPage } = usePokemonPage()
 
   return (
     <div>
