@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-ssr/
+.vercel/
+.playwright-cli/
+.agents/
+.codex/
+coverage/
+package-lock.json
+src/assets/
+public/

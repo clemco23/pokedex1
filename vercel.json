@@ -4,5 +4,18 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run lint && npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "images": {
+    "sizes": [128, 192, 256, 384, 512],
+    "qualities": [75],
+    "formats": ["image/webp"],
+    "minimumCacheTTL": 86400,
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "raw.githubusercontent.com",
+        "pathname": "/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/**"
+      }
+    ]
+  },
+  "rewrites": [{ "source": "/((?!_vercel/image).*)", "destination": "/index.html" }]
 }

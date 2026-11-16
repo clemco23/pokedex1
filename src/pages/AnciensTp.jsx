@@ -1,5 +1,4 @@
-﻿
-import Pokemon from '../components/Pokemon.jsx'
+﻿import Pokemon from '../components/Pokemon.jsx'
 import PokedexApi from '../components/PokedexApi.jsx'
 
 function AnciensTp() {
@@ -22,14 +21,12 @@ function AnciensTp() {
         </div>
         <div className="pokemon-grid">
           {pokemons.length === 0 ? (
-            <p className="state-message" role="status">Aucun pokemon disponible.</p>
+            <p className="state-message" role="status">
+              Aucun pokemon disponible.
+            </p>
           ) : (
             pokemons.map((pokemon) => (
-              <Pokemon
-                key={pokemon.id}
-                nom={pokemon.nom}
-                element={pokemon.element}
-              />
+              <Pokemon key={pokemon.id} nom={pokemon.nom} element={pokemon.element} />
             ))
           )}
         </div>
@@ -40,4 +37,3 @@ function AnciensTp() {
 }
 
 export default AnciensTp
-

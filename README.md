@@ -21,9 +21,18 @@ npm run dev
 
 ## Vérifications
 
+Avant un commit, lancer les contrôles suivants depuis la racine du projet :
+
 ```sh
+npm run format:check
 npm run lint
+npm test
 npm run build
+```
+
+Pour vérifier ensuite le résultat compilé dans le navigateur :
+
+```sh
 npm run preview
 ```
 
