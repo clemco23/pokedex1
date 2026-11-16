@@ -29,6 +29,23 @@ npm run preview
 
 La compilation de production est générée dans `dist/`.
 
+## Tests unitaires
+
+Les tests sont regroupés dans `test/`, avec une structure qui reprend celle de `src/`.
+Vitest est configuré dans `vite.config.js` et recherche les fichiers `*.test.js` et
+`*.test.jsx` uniquement dans ce dossier. L'environnement Node convient aux services
+et à la logique JavaScript ; les tests nécessitant un DOM demanderont un environnement
+tel que jsdom.
+
+```sh
+npm test
+npm run test:watch
+```
+
+`npm test` exécute les tests une fois ; `npm run test:watch` les relance à chaque
+modification. Le premier test, `test/services/api.test.js`, vérifie l'adresse utilisée
+par le client PokéAPI et les données retournées, avec une réponse HTTP simulée.
+
 ## Pipeline CI/CD
 
 - **CI — GitHub Actions** : `.github/workflows/ci.yml` installe les dépendances avec `npm ci`, exécute ESLint puis compile l’application. Déclenchement sur les push vers `main`, les pull requests et manuellement depuis l’onglet Actions.
