@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import { getPokemon, readPokemon } from '../services/pokemonCache.js'
 import PokemonImage from '../components/PokemonImage.jsx'
 import PokeDetailsSkeleton from '../components/PokeDetailsSkeleton.jsx'
+import PokemonComments from '../components/PokemonComments.jsx'
 
 function PokeDetails() {
   const { id } = useParams()
@@ -91,6 +92,9 @@ function PokeDetails() {
           </div>
         </article>
       ) : null}
+      {pokemon && !isLoading && !erreur && (
+        <PokemonComments key={pokemon.id} pokemonId={pokemon.id} />
+      )}
     </div>
   )
 }
