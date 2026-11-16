@@ -55,6 +55,17 @@ npm run test:watch
 modification. Le premier test, `test/services/api.test.js`, vérifie l'adresse utilisée
 par le client PokéAPI et les données retournées, avec une réponse HTTP simulée.
 
+### Couverture des tests
+
+```sh
+npm run coverage
+```
+
+La couverture de tous les fichiers JavaScript et JSX de `src/` est affichée dans
+le terminal. Ouvrir `coverage/index.html` dans un navigateur pour consulter le
+rapport détaillé par fichier et les lignes non couvertes. Le dossier `coverage/`
+est généré automatiquement et ignoré par Git.
+
 ## Pipeline CI/CD
 
 - **CI — GitHub Actions** : `.github/workflows/ci.yml` installe les dépendances avec `npm ci`, exécute ESLint puis compile l’application. Déclenchement sur les push vers `main`, les pull requests et manuellement depuis l’onglet Actions.

@@ -9,5 +9,11 @@ export default defineConfig({
     include: ['test/**/*.test.{js,jsx}'],
     clearMocks: true,
     restoreMocks: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'lcov'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.{js,jsx}'],
+    },
   },
 })
