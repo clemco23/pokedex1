@@ -50,8 +50,9 @@ src/
     pokemonComments.js      # Validation et stockage des commentaires
   index.css                 # Styles globaux et variables de couleur
   App.css                   # Styles des composants et adaptation aux écrans
-test/services/              # Tests unitaires Vitest
-tests/pokemonCache.test.js   # Tests supplémentaires avec le runner Node
+test/services/              # Tests unitaires Jest
+tests/pokemonCache.test.js   # Tests supplémentaires du cache avec Jest
+jest.config.js              # Configuration des tests et de la couverture
 .github/workflows/ci.yml     # Vérifications GitHub Actions
 vercel.json                 # Compilation, images et réécriture des routes
 ```
@@ -173,11 +174,17 @@ La compilation de production est générée dans `dist/`.
 
 ## Tests
 
-Les tests sont regroupés dans `test/`, avec une structure qui reprend celle de `src/`.
-Vitest est configuré dans `vite.config.js` et recherche les fichiers `*.test.js` et
-`*.test.jsx` uniquement dans ce dossier. L'environnement Node convient aux services
-et à la logique JavaScript ; les tests nécessitant un DOM demanderont un environnement
-tel que jsdom.
+Les tests utilisent **Jest**, configuré dans `jest.config.js`. Les dossiers `test/`
+et `tests/` sont exécutés par la même commande. L'environnement Node est adapté aux
+services et à la logique JavaScript ; les tests de composants nécessitant un DOM
+demanderont un environnement tel que jsdom.
+
+Le projet utilise les modules ES (`import` / `export`). Les scripts lancent donc
+Jest avec l'option Node `--experimental-vm-modules`, conformément à la
+[documentation Jest](https://jestjs.io/docs/ecmascript-modules). Node peut afficher
+un avertissement sur cette fonctionnalité expérimentale. `babel-jest` et le preset
+React transforment le JSX pour l'analyse de couverture et les futurs tests de composants.
+Les fonctions de test et les mocks sont importés depuis `@jest/globals`.
 
 ```sh
 npm test
@@ -188,20 +195,20 @@ npm run test:watch
 modification. Le premier test, `test/services/api.test.js`, vérifie l'adresse utilisée
 par le client PokéAPI et les données retournées, avec une réponse HTTP simulée.
 
-Les fichiers Vitest présents couvrent :
+Les fichiers Jest présents couvrent :
 
 | Fichier | Cas vérifiés |
 | --- | --- |
 | `test/services/api.test.js` | Adresse de l'appel Axios et données retournées. |
 | `test/services/pokemonCache.test.js` | Réutilisation, normalisation des clés, expiration, requêtes simultanées, erreurs, pagination et éviction des caches. |
 | `test/services/pokemonComments.test.js` | Persistance et isolation par Pokémon, validation des champs, données illisibles et échec du stockage. |
+| `tests/pokemonCache.test.js` | Partage liste/détail, requêtes simultanées, nouvelle tentative après erreur et expiration du cache. |
 
 Ces tests simulent les réponses HTTP ou le stockage ; ils ne dépendent pas du réseau.
-Une autre suite, `tests/pokemonCache.test.js`, utilise `node:test`. Elle est hors du
-périmètre de Vitest et se lance séparément :
+Pour lancer uniquement la suite supplémentaire du cache :
 
 ```sh
-node --test tests/pokemonCache.test.js
+npm test -- --runTestsByPath tests/pokemonCache.test.js
 ```
 
 ### Couverture des tests

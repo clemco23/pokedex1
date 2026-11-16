@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, jest } from '@jest/globals'
 import { addComment, readComments } from '../../src/services/pokemonComments.js'
 
 function createStorage() {
@@ -30,7 +30,7 @@ describe('Commentaires par Pokémon', () => {
   })
 
   it('ne remplace pas des données illisibles', () => {
-    const storage = { getItem: () => '{invalid', setItem: vi.fn() }
+    const storage = { getItem: () => '{invalid', setItem: jest.fn() }
     expect(() => addComment(25, 'Sacha', 'Test', storage)).toThrow()
     expect(storage.setItem).not.toHaveBeenCalled()
   })

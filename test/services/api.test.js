@@ -1,11 +1,11 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, jest } from '@jest/globals'
 import api from '../../src/services/api.js'
 
 describe('Client PokéAPI', () => {
   it('récupère un Pokémon depuis la bonne adresse et retourne ses données', async () => {
     const pokemon = { id: 25, name: 'pikachu' }
     // L'adaptateur simule la réponse HTTP : aucun appel réseau n'est effectué.
-    const adapter = vi.fn(async (config) => ({
+    const adapter = jest.fn(async (config) => ({
       data: pokemon,
       status: 200,
       statusText: 'OK',
@@ -15,7 +15,7 @@ describe('Client PokéAPI', () => {
 
     const response = await api.get('/pokemon/25', { adapter })
 
-    expect(adapter).toHaveBeenCalledOnce()
+    expect(adapter).toHaveBeenCalledTimes(1)
     expect(api.getUri(adapter.mock.calls[0][0])).toBe(
       'https://pokeapi.co/api/v2/pokemon/25',
     )

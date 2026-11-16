@@ -1,24 +1,22 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import api from '../../src/services/api.js'
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals'
+const api = { get: jest.fn() }
 
-vi.mock('../../src/services/api.js', () => ({
-  default: { get: vi.fn() },
-}))
+jest.unstable_mockModule('../../src/services/api.js', () => ({ default: api }))
 
 let cache
 const pikachu = { id: 25, name: 'pikachu' }
 
 beforeEach(async () => {
   // Recharge les deux caches pour que chaque test parte d'un état vide.
-  vi.resetModules()
+  jest.resetModules()
   api.get.mockReset()
-  vi.useFakeTimers()
-  vi.setSystemTime(new Date('2026-01-01T12:00:00Z'))
+  jest.useFakeTimers()
+  jest.setSystemTime(new Date('2026-01-01T12:00:00Z'))
   cache = await import('../../src/services/pokemonCache.js')
 })
 
 afterEach(() => {
-  vi.useRealTimers()
+  jest.useRealTimers()
 })
 
 describe('Cache des Pokémon', () => {
@@ -33,7 +31,8 @@ describe('Cache des Pokémon', () => {
     expect(await cache.getPokemon(25)).toEqual(pikachu)
     expect(cache.readPokemon(25)).toEqual(pikachu)
     expect(await cache.getPokemon(25)).toEqual(pikachu)
-    expect(api.get).toHaveBeenCalledExactlyOnceWith('/pokemon/25/')
+    expect(api.get).toHaveBeenCalledTimes(1)
+    expect(api.get).toHaveBeenCalledWith('/pokemon/25/')
   })
 
   it('partage le cache entre un identifiant et une URL, avec ou sans slash final', async () => {
@@ -43,7 +42,7 @@ describe('Cache des Pokémon', () => {
 
     expect(await cache.getPokemon(25)).toEqual(pikachu)
     expect(cache.readPokemon('https://pokeapi.co/api/v2/pokemon/25')).toEqual(pikachu)
-    expect(api.get).toHaveBeenCalledOnce()
+    expect(api.get).toHaveBeenCalledTimes(1)
   })
 
   it('normalise les noms en minuscules', async () => {
@@ -52,17 +51,18 @@ describe('Cache des Pokémon', () => {
     await cache.getPokemon('PIKACHU')
 
     expect(cache.readPokemon('pikachu')).toEqual(pikachu)
-    expect(api.get).toHaveBeenCalledExactlyOnceWith('/pokemon/pikachu/')
+    expect(api.get).toHaveBeenCalledTimes(1)
+    expect(api.get).toHaveBeenCalledWith('/pokemon/pikachu/')
   })
 
   it('expire exactement après cinq minutes, puis recharge les données', async () => {
     api.get.mockResolvedValue({ data: pikachu })
     await cache.getPokemon(25)
 
-    vi.advanceTimersByTime(5 * 60 * 1000 - 1)
+    jest.advanceTimersByTime(5 * 60 * 1000 - 1)
     expect(cache.readPokemon(25)).toEqual(pikachu)
 
-    vi.advanceTimersByTime(1)
+    jest.advanceTimersByTime(1)
     expect(cache.readPokemon(25)).toBeUndefined()
     await cache.getPokemon(25)
     expect(api.get).toHaveBeenCalledTimes(2)
@@ -76,7 +76,7 @@ describe('Cache des Pokémon', () => {
     const second = cache.getPokemon(25)
     expect(first).toBe(second)
     await Promise.resolve()
-    expect(api.get).toHaveBeenCalledOnce()
+    expect(api.get).toHaveBeenCalledTimes(1)
 
     resolveRequest({ data: pikachu })
     expect(await Promise.all([first, second])).toEqual([pikachu, pikachu])
@@ -151,7 +151,7 @@ describe('Cache des pages', () => {
     api.get.mockResolvedValue({ data: { results: [], next: null } })
     await cache.getPokemonPage(1)
 
-    vi.advanceTimersByTime(5 * 60 * 1000)
+    jest.advanceTimersByTime(5 * 60 * 1000)
 
     expect(cache.readPokemonPage(1)).toBeUndefined()
     await cache.getPokemonPage(1)
