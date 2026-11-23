@@ -34,14 +34,18 @@ Il n'y a pas de rendu serveur (SSR) ni de génération statique des fiches (SSG)
 La consultation nécessite JavaScript ; les données non mises en cache nécessitent
 un accès à PokéAPI.
 
-## Organisation du code
+## Organisation du code en Atomic Design
 
 ```text
 src/
   main.jsx                  # Montage React et BrowserRouter
-  App.jsx                   # Navigation globale, routes et Suspense
+  App.jsx                   # Routes et chargement des pages avec Suspense
   pages/                    # Accueil, fiche Pokémon et anciens TP
-  components/               # Cartes, pagination, images, commentaires et squelettes
+  components/
+    atoms/                  # Image du Pokémon
+    molecules/              # Cartes individuelles et contrôles de pagination
+    organisms/              # Collection de cartes, commentaires et squelettes
+    templates/              # Structure commune aux pages
   hooks/usePokemonPage.js   # Chargement et état de la pagination
   services/
     api.js                  # Client HTTP Axios
@@ -52,15 +56,23 @@ src/
   App.css                   # Styles des composants et adaptation aux écrans
 test/services/              # Tests unitaires Jest
 tests/pokemonCache.test.js   # Tests supplémentaires du cache avec Jest
+test/functional/            # Parcours de navigation et de commentaire
 jest.config.js              # Configuration des tests et de la couverture
 .github/workflows/ci.yml     # Vérifications GitHub Actions
 vercel.json                 # Compilation, images et réécriture des routes
 ```
 
-Cette organisation sépare les responsabilités techniques. Les pages assemblent les
-composants, le hook gère la pagination et les services isolent l'accès aux données.
-Les composants partagés, comme `PokemonImage` et `Pagination`, regroupent les
-éléments réutilisables de l'interface.
+Sur l'accueil, l'atome [PokemonImage](src/components/atoms/PokemonImage.jsx)
+affiche l'illustration. La molécule [PokeCard](src/components/molecules/PokeCard.jsx)
+y associe un nom, des types et un lien vers la fiche. L'organisme
+[PokemonGrid](src/components/organisms/PokemonGrid.jsx) assemble ces cartes en collection.
+La page [Home](src/pages/Home.jsx) fournit les Pokémon de la page courante grâce à
+`usePokemonPage` et relie les boutons de pagination aux changements de page.
+
+Le template [PokedexLayout](src/components/templates/PokedexLayout.jsx) place la
+page active entre la navigation et le pied de page. Il est partagé par l'accueil,
+la fiche détaillée et les anciens TP. Les hooks et les services restent organisés
+par rôle technique pour partager la pagination, le cache et l'accès aux données.
 
 ## Optimisation des performances
 

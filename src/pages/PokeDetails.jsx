@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getPokemon, readPokemon } from '../services/pokemonCache.js'
-import PokemonImage from '../components/PokemonImage.jsx'
-import PokeDetailsSkeleton from '../components/PokeDetailsSkeleton.jsx'
-import PokemonComments from '../components/PokemonComments.jsx'
+import PokemonImage from '../components/atoms/PokemonImage.jsx'
+import PokeDetailsSkeleton from '../components/organisms/PokeDetailsSkeleton.jsx'
+import PokemonComments from '../components/organisms/PokemonComments.jsx'
 
 function PokeDetails() {
   const { id } = useParams()

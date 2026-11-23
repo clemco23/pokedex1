@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
-import PokemonImage from './PokemonImage.jsx'
+import PokemonImage from '../atoms/PokemonImage.jsx'
 
 function PokeCard({ id, nom, element, image, index = 0 }) {
   const { search } = useLocation()

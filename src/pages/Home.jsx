@@ -1,6 +1,6 @@
-import PokeCard from '../components/PokeCard.jsx'
-import PokeGridSkeleton from '../components/PokeGridSkeleton.jsx'
-import Pagination from '../components/Pagination.jsx'
+import PokemonGrid from '../components/organisms/PokemonGrid.jsx'
+import PokeGridSkeleton from '../components/organisms/PokeGridSkeleton.jsx'
+import Pagination from '../components/molecules/Pagination.jsx'
 import usePokemonPage from '../hooks/usePokemonPage.js'
 
 function Home() {
@@ -30,21 +30,7 @@ function Home() {
           Aucun pokemon disponible.
         </p>
       ) : (
-        <div className="pokemon-grid">
-          {pokemons.map((pokemon, index) => (
-            <PokeCard
-              key={pokemon.id}
-              index={index}
-              id={pokemon.id}
-              nom={pokemon.name}
-              element={pokemon.types.map((type) => type.type.name).join(', ')}
-              image={
-                pokemon.sprites.other['official-artwork'].front_default ||
-                pokemon.sprites.front_default
-              }
-            />
-          ))}
-        </div>
+        <PokemonGrid pokemons={pokemons} />
       )}
       <Pagination
         page={page}

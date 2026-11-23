@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { addComment, readComments } from '../services/pokemonComments.js'
+import { addComment, readComments } from '../../services/pokemonComments.js'
 
 function PokemonComments({ pokemonId }) {
   const [initial] = useState(() => {

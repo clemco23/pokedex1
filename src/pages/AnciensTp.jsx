@@ -1,5 +1,5 @@
-﻿import Pokemon from '../components/Pokemon.jsx'
-import PokedexApi from '../components/PokedexApi.jsx'
+﻿import Pokemon from '../components/molecules/Pokemon.jsx'
+import PokedexApi from '../components/organisms/PokedexApi.jsx'
 
 function AnciensTp() {
   const pokemons = [

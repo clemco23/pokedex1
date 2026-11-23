@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getPokemonImageProps } from '../services/pokemonImages.js'
+import { getPokemonImageProps } from '../../services/pokemonImages.js'
 
 function PokemonImage({ src, alt, variant = 'card', ...props }) {
   const [failedSource, setFailedSource] = useState(null)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Pokemon from './PokemonApi.jsx'
+import Pokemon from '../molecules/PokemonApi.jsx'
 
 function PokedexApi() {
   const [pokemons, setPokemons] = useState([])
