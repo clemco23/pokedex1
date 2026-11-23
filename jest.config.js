@@ -1,5 +1,6 @@
 export default {
   testEnvironment: 'node',
+  moduleNameMapper: { '\\.css$': '<rootDir>/test/fixtures/style.js' },
   testMatch: ['<rootDir>/test/**/*.test.[jt]s?(x)', '<rootDir>/tests/**/*.test.[jt]s?(x)'],
   clearMocks: true,
   restoreMocks: true,

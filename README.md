@@ -175,15 +175,15 @@ La compilation de production est générée dans `dist/`.
 ## Tests
 
 Les tests utilisent **Jest**, configuré dans `jest.config.js`. Les dossiers `test/`
-et `tests/` sont exécutés par la même commande. L'environnement Node est adapté aux
-services et à la logique JavaScript ; les tests de composants nécessitant un DOM
-demanderont un environnement tel que jsdom.
+et `tests/` sont exécutés par la même commande. Les tests unitaires des services
+tournent sous Node. Les parcours fonctionnels de `test/functional/` utilisent jsdom,
+React Testing Library et `user-event` pour rendre l'application et interagir avec elle.
 
 Le projet utilise les modules ES (`import` / `export`). Les scripts lancent donc
 Jest avec l'option Node `--experimental-vm-modules`, conformément à la
 [documentation Jest](https://jestjs.io/docs/ecmascript-modules). Node peut afficher
 un avertissement sur cette fonctionnalité expérimentale. `babel-jest` et le preset
-React transforment le JSX pour l'analyse de couverture et les futurs tests de composants.
+React transforment le JSX pour les tests de l'interface et l'analyse de couverture.
 Les fonctions de test et les mocks sont importés depuis `@jest/globals`.
 
 ```sh
@@ -202,9 +202,26 @@ Les fichiers Jest présents couvrent :
 | `test/services/api.test.js` | Adresse de l'appel Axios et données retournées. |
 | `test/services/pokemonCache.test.js` | Réutilisation, normalisation des clés, expiration, requêtes simultanées, erreurs, pagination et éviction des caches. |
 | `test/services/pokemonComments.test.js` | Persistance et isolation par Pokémon, validation des champs, données illisibles et échec du stockage. |
+| `test/services/pokemonImages.test.js` | La fiche demande une illustration de plus grande largeur que la carte. Un sprite de secours conserve son URL d'origine. |
+| `test/functional/pokedex.test.jsx` | Navigation aller-retour depuis la page 2 et persistance d'un commentaire à la réouverture d'une fiche. |
 | `tests/pokemonCache.test.js` | Partage liste/détail, requêtes simultanées, nouvelle tentative après erreur et expiration du cache. |
 
-Ces tests simulent les réponses HTTP ou le stockage ; ils ne dépendent pas du réseau.
+Les parcours fonctionnels utilisent le routeur, les composants et les services de
+l'application. Les réponses de PokéAPI sont simulées pour rendre les tests reproductibles.
+
+1. Depuis `/?page=2`, le test clique sur la carte de Pikachu, vérifie le titre de
+   sa fiche et suit le lien de retour. Il vérifie que la carte réapparaît et que
+   l'URL de la collection conserve la page 2.
+2. Sur la fiche de Pikachu, le test saisit un pseudo et un commentaire, puis clique
+   sur le bouton d'ajout. Il ferme et remonte l'application en conservant le
+   `localStorage` de jsdom, puis retrouve le pseudo et le texte dans la même entrée.
+
+Pour exécuter uniquement les deux parcours fonctionnels :
+
+```sh
+npm test -- test/functional
+```
+
 Pour lancer uniquement la suite supplémentaire du cache :
 
 ```sh
